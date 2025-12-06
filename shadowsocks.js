@@ -1,17 +1,17 @@
-// 如需要使用环境变量,将120至126行取消注释
+// If you need to use environment variables, uncomment lines 120 to 126.
 
 import { connect } from 'cloudflare:sockets';
 
-let subPath = 'link';     // 节点订阅路径,不修改将使用UUID作为订阅路径
-let proxyIP = '210.61.97.241:81';  // proxyIP 格式：ip、域名、ip:port、域名:port等,没填写port，默认使用443
-let password = '90dfc842-1361-41e5-a47b-3d964d6f235c';  // 节点UUID
-let SSpath = '';          // 路径验证，如果为空则使用UUID作为验证路径
+let subPath = 'link';     // If the node subscription path is not modified, the UUID will be used as the subscription path.
+let proxyIP = '210.61.97.241:81';  // proxyIP format: ip, domain, ip:port, domain:port, etc. If no port is specified, 443 is used by default.
+let password = '79e26b6e-7072-4d79-8256-3716fe354e90';  // Node UUID
+let SSpath = '';          // Path verification: If the path is empty, the UUID will be used as the verification path.
 
 // CF CDN 
-let cfip = [ // 格式:优选域名:端口#备注名称、优选IP:端口#备注名称、[ipv6优选]:端口#备注名称、优选域名#备注 
+let cfip = [ // Format: Preferred Domain: Port # Remark Name, Preferred IP: Port # Remark Name, [IPv6 Preferred]: Port # Remark Name, Preferred Domain # Remark
     'mfa.gov.ua#SG', 'saas.sin.fan#JP', 'store.ubi.com#SG','cf.130519.xyz#KR','cf.008500.xyz#HK', 
     'cf.090227.xyz#SG', 'cf.877774.xyz#HK','cdns.doon.eu.org#JP','sub.danfeng.eu.org#TW','cf.zhetengsha.eu.org#HK'
-];  // 在此感谢各位大佬维护的优选域名
+];  // Many thanks to the experts who maintained the preferred domain name.
 
 function closeSocketQuietly(socket) { 
     try { 
@@ -116,7 +116,7 @@ function isSpeedTestSite(hostname) {
 export default {
     async fetch(request,env) {
         try {
-            // workers 部署，需要环境变量，把下面5行前面的//去掉，取消注释即可使用对应的环境变量
+            // workers Deployment requires environment variables. Remove the '//' at the beginning of the following five lines to uncomment them and use the corresponding environment variables.
             // if (env.PROXYIP || env.proxyip || env.proxyIP) {
             //     const servers = (env.PROXYIP || env.proxyip || env.proxyIP).split(',').map(s => s.trim());
             //     proxyIP = servers[0]; 
@@ -146,7 +146,7 @@ export default {
                 try {
                     pathProxyIP = decodeURIComponent(pathname.substring(9)).trim();
                 } catch (e) {
-                    // 忽略错误
+                    // Ignore errors
                 }
 
                 if (pathProxyIP && !request.headers.get('Upgrade')) {
@@ -170,7 +170,7 @@ export default {
                     try {
                         wsPathProxyIP = decodeURIComponent(pathname.substring(9)).trim();
                     } catch (e) {
-                        // 忽略错误
+                        // Ignore errors
                     }
                 }
                 
@@ -185,7 +185,7 @@ export default {
                     return getHomePage(request);
                 }
                 
-                // 订阅路径 /sub/UUID
+                //  Subscription path/sub/UUID
                 if (url.pathname.toLowerCase() === `/sub/${subPath.toLowerCase()}` || url.pathname.toLowerCase() === `/sub/${subPath.toLowerCase()}/`) {
                     const currentDomain = url.hostname;
                     const ssHeader = 's'+'s';
